@@ -12,9 +12,14 @@ class Deployment
   attribute :password, String
 
   def self.find(id)
-    response = Faraday.get("#{ENV['API_URL']}/deployments/#{id}")
+    # binding.remote_pry
+    response = Faraday.get("#{Rails.application.secrets.api_url}/deployments/#{id}")
     body = JSON.parse(response.body)
-    class_by_type(body['type']).new(body)
+    if body['type']
+      class_by_type(body['type']).new(body)
+    else
+      return nil 
+    end
   end
 
   def self.class_by_type(type)

@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   private
 
   def current_deployment
+    # binding.remote_pry
     @current_deployment ||= Deployment.find(params[:deployment_id])
   end
 

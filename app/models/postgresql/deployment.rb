@@ -1,13 +1,19 @@
 class PostgreSQL::Deployment < Deployment
   
   def client(db_name = 'postgres')
-    PG::Connection.new({
+    # binding.remote_pry
+    a=PG::Connection.new({
       host: host,
       port: port,
       user: username,
       password: password,
       dbname: db_name
     })
+		if a 
+			return a 
+		else 
+			nil
+		end
   end
 
   def databases
@@ -22,3 +28,5 @@ class PostgreSQL::Deployment < Deployment
   end
 
 end
+
+# PostgreSQL::Deployment

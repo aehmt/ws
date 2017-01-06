@@ -19,6 +19,8 @@ gem 'virtus'
 
 group :development, :test do
   gem 'byebug'
+  gem 'pry'
+  gem 'pry-remote'
   gem 'rspec-rails'
 end
 

@@ -10,19 +10,24 @@ class PostgreSQL::Database
   end
 
   def tables
-    client.exec(<<-eos
-      SELECT 
-        nspname AS schemaname,relname,reltuples
-      FROM pg_class C
-      LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace)
-      WHERE 
-        nspname NOT IN ('pg_catalog', 'information_schema') AND
-        relkind='r' 
-      ORDER BY reltuples DESC;
-    eos
-    ).map do |row|
-      PostgreSQL::Table.new(name: row['relname'], rows_count: row['reltuples'], database: self, deployment: deployment)
-    end
-  end
+		# binding.remote_pry
 
+		begin
+				client.exec(<<-eos
+					SELECT 
+						nspname AS schemaname,relname,reltuples
+					FROM pg_class C
+					LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace)
+					WHERE 
+						nspname NOT IN ('pg_catalog', 'information_schema') AND
+						relkind='r' 
+					ORDER BY reltuples DESC;
+				eos
+				).map do |row|
+					PostgreSQL::Table.new(name: row['relname'], rows_count: row['reltuples'], database: self, deployment: deployment)
+				end
+		rescue
+			return nil
+		end
+  end
 end

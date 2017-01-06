@@ -1,7 +1,12 @@
 class PostgreSQL::DatabasesController < PostgreSQL::BaseController
 
   def index
-    render locals: {databases: current_deployment.databases}
+    # binding.remote_pry
+    if current_deployment 
+      render locals: {databases: current_deployment.databases}
+    else
+      render :file => 'public/404.html', :status => :not_found, :layout => false
+    end
   end
 
   def current_database
